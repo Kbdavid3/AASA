@@ -1,0 +1,329 @@
+import SwiftUI
+import FirebaseAuth
+
+struct ResetPasswordView: View {
+    @Environment(\.dismiss) private var dismiss
+    @State private var email: String = ""
+    @State private var showContent = false
+    @State private var isLoading = false
+    @State private var showSuccess = false
+    @State private var alertItem: AlertItem?
+    
+    let themeColor = Color(red: 242/255, green: 108/255, blue: 146/255) // #F26C92
+    
+    var body: some View {
+        GeometryReader { geo in
+            ZStack {
+                // Full Screen Background
+                Image("party")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: geo.size.width, height: geo.size.height)
+                    .clipped()
+                    .ignoresSafeArea(.all)
+                    .overlay(
+                        // Dark overlay for text readability
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                Color.black.opacity(0.3),
+                                Color.black.opacity(0.7),
+                                Color.black.opacity(0.8)
+                            ]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .onTapGesture {
+                        // Dismiss keyboard when tapping background
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    }
+                
+                ScrollView {
+                    VStack(spacing: 0) {
+                        // Enhanced Header
+                        HStack {
+                            Button(action: { dismiss() }) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.white.opacity(0.15))
+                                        .frame(width: 40, height: 40)
+                                        .blur(radius: 0.5)
+                                    
+                                    Image(systemName: "chevron.left")
+                                        .font(.system(size: 18, weight: .semibold))
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            
+                            Spacer()
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 10)
+                        .frame(maxWidth: geo.size.width)
+                        
+                        Spacer(minLength: 20)
+                        
+                        // Main Card
+                        VStack(spacing: 0) {
+                            // Reset Password Header
+                            VStack(spacing: 8) {
+                                Text("Reset Password")
+                                    .font(.system(size: 28, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .opacity(showContent ? 1 : 0)
+                                    .offset(y: showContent ? 0 : -20)
+                                
+                                Text("Enter your email to receive reset instructions")
+                                    .font(.system(size: 16, weight: .medium))
+                                    .foregroundColor(.white.opacity(0.8))
+                                    .multilineTextAlignment(.center)
+                                    .opacity(showContent ? 1 : 0)
+                                    .offset(y: showContent ? 0 : -15)
+                            }
+                            .padding(.horizontal, 24)
+                            .padding(.bottom, 32)
+                            .padding(.top, 40)
+                            
+                            // Email Input Field
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Image(systemName: "envelope.fill")
+                                        .foregroundColor(themeColor)
+                                        .font(.system(size: 14))
+                                    
+                                    Text("Email Address")
+                                        .font(.system(size: 14, weight: .medium))
+                                        .foregroundColor(.white.opacity(0.9))
+                                    
+                                    Spacer()
+                                }
+                                
+                                TextField("Enter your email", text: $email)
+                                    .font(.system(size: 16, weight: .medium))
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 20)
+                                    .padding(.vertical, 16)
+                                    .background(
+                                        ZStack {
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .fill(Color.white.opacity(0.05))
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 16)
+                                                        .stroke(
+                                                            LinearGradient(
+                                                                gradient: Gradient(colors: [
+                                                                    Color.white.opacity(0.2),
+                                                                    Color.white.opacity(0.1)
+                                                                ]),
+                                                                startPoint: .topLeading,
+                                                                endPoint: .bottomTrailing
+                                                            ),
+                                                            lineWidth: 1
+                                                        )
+                                                )
+                                        }
+                                    )
+                                    .keyboardType(.emailAddress)
+                                    .textInputAutocapitalization(.never)
+                            }
+                            .opacity(showContent ? 1 : 0)
+                            .offset(y: showContent ? 0 : 20)
+                            .padding(.horizontal, 24)
+                            .padding(.bottom, 32)
+                            
+                            // Send Reset Button
+                            Button(action: sendResetEmail) {
+                                HStack(spacing: 12) {
+                                    if isLoading {
+                                        ProgressView()
+                                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                            .scaleEffect(0.9)
+                                    } else {
+                                        Image(systemName: "paperplane.fill")
+                                            .font(.system(size: 16, weight: .medium))
+                                        
+                                        Text("Send Reset Email")
+                                            .font(.system(size: 16, weight: .bold))
+                                    }
+                                }
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 56)
+                                .background(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [
+                                            themeColor,
+                                            themeColor.opacity(0.8)
+                                        ]),
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .cornerRadius(16)
+                                .shadow(color: themeColor.opacity(0.3), radius: 10, x: 0, y: 5)
+                            }
+                            .disabled(email.isEmpty || isLoading)
+                            .opacity(email.isEmpty ? 0.6 : 1.0)
+                            .scaleEffect(showContent ? 1 : 0.9)
+                            .opacity(showContent ? 1 : 0)
+                            .offset(y: showContent ? 0 : 30)
+                            .padding(.horizontal, 24)
+                            .padding(.bottom, 24)
+                            
+                            // Back to Sign In Link
+                            VStack(spacing: 8) {
+                                HStack(spacing: 4) {
+                                    Text("Remember your password?")
+                                        .font(.system(size: 14, weight: .medium))
+                                        .foregroundColor(.white.opacity(0.8))
+                                    
+                                    Button(action: { dismiss() }) {
+                                        Text("Sign In")
+                                            .font(.system(size: 14, weight: .bold))
+                                            .foregroundColor(themeColor)
+                                    }
+                                }
+                                
+                                Text("We'll send you a secure link to reset your password")
+                                    .font(.system(size: 11))
+                                    .foregroundColor(.white.opacity(0.6))
+                                    .multilineTextAlignment(.center)
+                            }
+                            .opacity(showContent ? 1 : 0)
+                            .padding(.horizontal, 24)
+                            .padding(.bottom, 30)
+                        }
+                        .background(
+                            ZStack {
+                                // Main background
+                                RoundedRectangle(cornerRadius: 24)
+                                    .fill(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [
+                                                Color.black.opacity(0.7),
+                                                Color.black.opacity(0.9)
+                                            ]),
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                    )
+                                
+                                // Glassmorphism effect
+                                RoundedRectangle(cornerRadius: 24)
+                                    .stroke(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [
+                                                Color.white.opacity(0.2),
+                                                Color.white.opacity(0.05),
+                                                Color.clear
+                                            ]),
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        ),
+                                        lineWidth: 1
+                                    )
+                                
+                                // Subtle inner glow
+                                RoundedRectangle(cornerRadius: 24)
+                                    .fill(
+                                        RadialGradient(
+                                            gradient: Gradient(colors: [
+                                                themeColor.opacity(0.05),
+                                                Color.clear
+                                            ]),
+                                            center: .topLeading,
+                                            startRadius: 50,
+                                            endRadius: 200
+                                        )
+                                    )
+                            }
+                        )
+                        .shadow(color: Color.black.opacity(0.3), radius: 20, x: 0, y: 10)
+                        .padding(.horizontal, 8)
+                        .padding(.bottom, 20)
+                        .padding(.top, 20)
+                        .frame(maxWidth: geo.size.width - 16)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(minHeight: geo.size.height)
+                }
+                .frame(maxWidth: .infinity)
+                
+                // Success Animation Overlay
+                if showSuccess {
+                    ZStack {
+                        Color.clear
+                            .ignoresSafeArea()
+                        
+                        ConfettiView()
+                            .allowsHitTesting(false)
+                    }
+                }
+            }
+        }
+        .onAppear {
+            // Staggered animations for better visual flow
+            withAnimation(.easeOut(duration: 0.6)) {
+                showContent = true
+            }
+        }
+        .alert(item: $alertItem) { alertItem in
+            Alert(
+                title: alertItem.title,
+                message: alertItem.message,
+                dismissButton: alertItem.dismissButton
+            )
+        }
+    }
+    
+    // MARK: - Reset Password Method
+    
+    private func sendResetEmail() {
+        guard !email.isEmpty else {
+            alertItem = AlertItem(
+                title: Text("Missing Information"),
+                message: Text("Please enter your email address."),
+                dismissButton: .default(Text("OK"))
+            )
+            return
+        }
+        
+        isLoading = true
+        
+        Auth.auth().sendPasswordReset(withEmail: email) { [self] error in
+            DispatchQueue.main.async {
+                isLoading = false
+                
+                if let error = error {
+                    alertItem = AlertItem(
+                        title: Text("Reset Failed"),
+                        message: Text(error.localizedDescription),
+                        dismissButton: .default(Text("OK"))
+                    )
+                } else {
+                    // Show success animation
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                        showSuccess = true
+                    }
+                    
+                    // Show success alert after confetti
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                        alertItem = AlertItem(
+                            title: Text("Email Sent!"),
+                            message: Text("We've sent you a password reset link. Please check your email and follow the instructions."),
+                            dismissButton: .default(Text("OK")) {
+                                dismiss()
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct ResetPasswordView_Previews: PreviewProvider {
+    static var previews: some View {
+        ResetPasswordView()
+    }
+}

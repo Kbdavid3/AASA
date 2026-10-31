@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "745475106905",
+    "project_id": "kiccbacc-b538e",
+    "storage_bucket": "kiccbacc-b538e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745475106905:android:ee459a725e7c86bf396948",
+        "android_client_info": {
+          "package_name": "com.kiccbacc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745475106905-o4aj11f6ts3ji6ab53imumes55aucmrg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kiccbacc",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "745475106905-qgt5186hrk45jt2qvju6geipu7otg0th.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtqDcCzLYorvrmSvtkGIHt1yCJiy-L25Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745475106905-qgt5186hrk45jt2qvju6geipu7otg0th.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "745475106905-h4urlrip3msf3egpn02imk22e7ch82nl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kiccbacc"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

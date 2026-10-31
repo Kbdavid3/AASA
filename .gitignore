@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Xcode
+DerivedData/
+build/
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+*.hmap
+
+# Swift
+.build/
+
+# Dependencies
+Pods/
+Carthage/Build/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Node.js
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+ios/KiccBacc/functions/.env
