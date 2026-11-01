@@ -132,7 +132,6 @@
 		277C5B812CB21755006334D5 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 277C5B802CB21755006334D5 /* FirebaseStorage */; };
 		277C5B832CB21755006334D5 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 277C5B822CB21755006334D5 /* FirebaseStorageCombine-Community */; };
 		277C5B882CB21846006334D5 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 277C5B872CB21846006334D5 /* SwiftUIIntrospect */; };
-		277C5B8C2CB21846006334D5 /* SwiftUIIntrospect-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 277C5B8B2CB21846006334D5 /* SwiftUIIntrospect-Static */; };
 		277C5B8F2CB2199E006334D5 /* KBImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277C5B8E2CB2199E006334D5 /* KBImage.swift */; };
 		278514932C9F79520001050B /* MapSelectionRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278514922C9F79520001050B /* MapSelectionRadius.swift */; };
 		278514BA2C9F7E780001050B /* MKCoordinateRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278514B92C9F7E780001050B /* MKCoordinateRegion.swift */; };
@@ -551,7 +550,6 @@
 				1F663F062D6E4EC600550B02 /* FirebaseFunctions in Frameworks */,
 				277C5B632CB21755006334D5 /* FirebaseAuthCombine-Community in Frameworks */,
 				1F663F182D6E4EC600550B02 /* FirebaseStorageCombine-Community in Frameworks */,
-				277C5B8C2CB21846006334D5 /* SwiftUIIntrospect-Static in Frameworks */,
 				277C5B712CB21755006334D5 /* FirebaseFunctions in Frameworks */,
 				1F663F122D6E4EC600550B02 /* FirebasePerformance in Frameworks */,
 				277C5B6B2CB21755006334D5 /* FirebaseDynamicLinks in Frameworks */,
@@ -1724,9 +1722,9 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = LT4G293DL9;
+				DEVELOPMENT_TEAM = FBYKQQC3UU;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(inherited)",
@@ -1739,7 +1737,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.2.1;
+				MARKETING_VERSION = 4.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = kiccbacc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1759,8 +1757,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = LT4G293DL9;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = FBYKQQC3UU;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(inherited)",
@@ -1773,7 +1771,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.2.1;
+				MARKETING_VERSION = 4.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = kiccbacc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2123,11 +2121,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 277C5B862CB21846006334D5 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
 			productName = SwiftUIIntrospect;
-		};
-		277C5B8B2CB21846006334D5 /* SwiftUIIntrospect-Static */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 277C5B862CB21846006334D5 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
-			productName = "SwiftUIIntrospect-Static";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
